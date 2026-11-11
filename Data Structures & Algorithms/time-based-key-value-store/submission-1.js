@@ -1,0 +1,47 @@
+class TimeMap {
+    constructor() {
+        this.keyStore = new Map();
+    }
+
+    /**
+     * @param {string} key
+     * @param {string} value
+     * @param {number} timestamp
+     * @return {void}
+     */
+    set(key, value, timestamp) {
+      
+      if(!this.keyStore.has(key)){
+        this.keyStore.set(key,[])
+      }
+      this.keyStore.get(key).push([value,timestamp])
+    }
+
+    /**
+     * @param {string} key
+     * @param {number} timestamp
+     * @return {string}
+     */
+    get(key, timestamp) {
+        let res = ""
+        
+        let values=this.keyStore.get(key);
+
+        //binary search
+        let left=0;
+        let right=values && values.length-1;
+
+        while(left<=right){
+          let mid = Math.floor((left+right)/2);
+          //get most recent value
+          if(values[mid][1] <= timestamp){
+            res = values[mid][0];
+            left = mid + 1;
+          }else{
+            right = mid - 1 
+          }
+
+        }
+        return res;
+    }
+}
